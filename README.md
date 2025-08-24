@@ -12,7 +12,7 @@ raco pkg install examples
 
 ![Demo of statically checked examples for `factorial`][demo]
 
-[demo]: https://github.com/philnguyen "Demo for `factorial`"
+[demo]: https://github.com/philnguyen/examples/blob/main/demo.gif "Demo for `factorial`"
 
 ## Example
 
