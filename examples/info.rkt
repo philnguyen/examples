@@ -5,4 +5,4 @@
 (define pkg-desc "Define statically checked examples for definitions in the same file")
 (define version "0.0.1")
 (define pkg-authors '(pcn))
-(define license '(MIT))
+(define license 'MIT)

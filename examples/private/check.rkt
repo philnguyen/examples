@@ -18,7 +18,7 @@
 
 (provide with-time-limit)
 
-(struct stx-err (msg site sub-site msg-more))
+(struct stx-err (msg site sub-site msg-more) #:transparent)
 
 (define last-check #f)
 (define last-check-finished? #t)
@@ -73,7 +73,7 @@
                   "")
               (exn-msg-for-stx-err e)))]
     [_
-     (raise-syntax-error #f "Unhandled internal problem" site #f '() (format "~n~a    Result: ~a" result))]))
+     (raise-syntax-error #f "Unhandled internal problem" site #f '() (format "~n    Result: ~a" result))]))
 
 ;; Only caring about message, site, and extended message for errors
 (define (fail msg site sub-site [msg-more ""])

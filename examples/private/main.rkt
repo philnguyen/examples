@@ -20,11 +20,13 @@
       body:expr ...))
    #:with (names*:id ...) (map (λ (name) (format-id #'with-examples "~a" name)) (syntax->list #'(names ...)))
    #:with suite-name (format-id #f "~a" (gensym 'suite-))
+   #:with required-racket/base (datum->syntax #'with-examples 'racket/base)
+   #:with required-examples (datum->syntax #'with-examples 'examples)
    #'(begin
        (provide (rename-out [names names*] ...))
        (module* suite-name #f
-         (require (for-syntax racket
-                              (rename-in (submod "..")
-                                         [names* names] ...)))
+         (require (for-syntax required-racket/base
+                              required-examples
+                              (rename-in (submod "..") [names* names] ...)))
          (begin-for-syntax
            (with-time-limit t #'suite (λ () body ...)))))])

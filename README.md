@@ -1,15 +1,16 @@
 Statically checked unit tests
 ===========
+
+```console
+raco pkg install examples
+```
+
 This library lets Racket programmers write unit tests executed at compile time,
 in the same file as the source code, providing interactive feedback similar to a type system.
 All editors (e.g. DrRacket, Emacs, VS Code, etc.) will highlight test failures the same way they have
 been highlighting other syntax errors.
 It is inspired by [`#guard`](https://github.com/leanprover/lean4/blob/8e828216e53de9a676ba6bd3486a96e1eb87de9e/src/Init/Guard.lean)
 commands in [Lean](https://lean-lang.org).
-
-```
-raco pkg install examples
-```
 
 ![Demo of statically checked examples for `factorial`][demo]
 
@@ -19,9 +20,7 @@ raco pkg install examples
 
 ```racket
 #lang racket/base
-(require examples
-         (for-syntax racket/base
-                     examples))
+(require examples)
          
 (define (factorial n)
   (if (< n 2) 1 (* n (factorial (- n 1)))))
@@ -30,8 +29,6 @@ raco pkg install examples
   (check-equal? (factorial 4) (* 1 2 3 4)))
 
 ```
-
-At the moment, it's neccessary for the enclosing module to explicitly require `(for-syntax racket/base examples)`.
 
 The `with-examples` form takes the list of names in the same files that it's referring to,
 followed by arbitrary Racket expressions.
@@ -75,7 +72,7 @@ at compile time, which is also distinct from the actual `state` printed at runti
 
 ## TODO
 
-- [ ] Possible to remove the need to explicitly require `(for-syntax racket/base examples)`?
+- [x] Possible to remove the need to explicitly require `(for-syntax racket/base examples)`?
 - [ ] Scribblings
 - [ ] Other forms of traditional run-time tests (e.g.
 [`contract-exercise`](https://docs.racket-lang.org/reference/Random_generation.html#%28def._%28%28lib._racket%2Fcontract..rkt%29._contract-exercise%29%29),
