@@ -1,10 +1,11 @@
 Statically checked unit tests
 ===========
-This library allows Racket programmers to write unit tests run at compile time,
+This library lets Racket programmers write unit tests executed at compile time,
 in the same file as the source code, providing interactive feedback similar to a type system.
 All editors (e.g. DrRacket, Emacs, VS Code, etc.) will highlight test failures the same way they have
 been highlighting other syntax errors.
-It is inspired by `#guard` commands in [Lean](https://lean-lang.org).
+It is inspired by [`#guard`](https://github.com/leanprover/lean4/blob/8e828216e53de9a676ba6bd3486a96e1eb87de9e/src/Init/Guard.lean)
+commands in [Lean](https://lean-lang.org).
 
 ```
 raco pkg install examples
@@ -41,7 +42,7 @@ Exceptions and timeouts within the `with-examples` block are also caught and rai
 with source locations as specific as possible. By default, each example block has a timeout of 1 second,
 applied to the entire block. To customize the timeout, say, to 4.5 seconds, pass `#:timeout 4.5`.
 
-## Reminder of semantics involving mutable state
+## Reminder on semantics involving mutable state
 
 Behind the scene, `with-examples` opens a throw-away "pocket sub-module" that at its compile time,
 imports the enclosing module and executes arbitrary Racket code.
@@ -51,7 +52,7 @@ But it's not a thing for the *compile*-time tests to "modify" the (yet to be com
 A static test that seems to modify and tests the enclosing state is just testing its own
 copy "in a separate timeline".
 
-In the following example, we see that each example block has its own view of the enclosing `state`
+In the following example, each example block has its own view of the enclosing `state`
 at compile time, which is also distinct from the actual `state` printed at runtime.
 
 ```racket
@@ -73,7 +74,9 @@ at compile time, which is also distinct from the actual `state` printed at runti
 ```
 
 ## TODO
-(Pull requests welcome)
 
-- [ ] Other forms of traditional run-time tests (e.g. `contract-exercise`?)
+- [ ] Possible to remove the need to explicitly require `(for-syntax racket/base examples)`?
 - [ ] Scribblings
+- [ ] Other forms of traditional run-time tests (e.g.
+[`contract-exercise`](https://docs.racket-lang.org/reference/Random_generation.html#%28def._%28%28lib._racket%2Fcontract..rkt%29._contract-exercise%29%29),
+[Redex's Testing](https://docs.racket-lang.org/redex/Testing.html#:~:text=Other%20Relations4.6%C2%A0-,Testing,-4.7%C2%A0GUI4.8)?)
