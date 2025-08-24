@@ -45,14 +45,14 @@ applied to the entire block. To customize the timeout, say, to 4.5 seconds, pass
 ## Reminder on semantics involving mutable state
 
 Behind the scene, `with-examples` opens a throw-away "pocket sub-module" that at its compile time,
-imports the enclosing module and executes arbitrary Racket code.
+imports the enclosing module and executes arbitrary Racket code (including modifying states
+and performing IO).
 
-In particular, it can do anything, including modifying states and performing IO.
-But it's not a thing for the *compile*-time tests to "modify" the (yet to be compiled!) *runtime* state.
+But it's not a thing for the *compile*-time tests to "modify" the (yet initialized!) *runtime* state.
 A static test that seems to modify and tests the enclosing state is just testing its own
-copy "in a separate timeline".
+instantiation "in a separate timeline".
 
-In the following example, each example block has its own view of the enclosing `state`
+In the following example, each example block has its own version of the enclosing `state`
 at compile time, which is also distinct from the actual `state` printed at runtime.
 
 ```racket
@@ -80,3 +80,4 @@ at compile time, which is also distinct from the actual `state` printed at runti
 - [ ] Other forms of traditional run-time tests (e.g.
 [`contract-exercise`](https://docs.racket-lang.org/reference/Random_generation.html#%28def._%28%28lib._racket%2Fcontract..rkt%29._contract-exercise%29%29),
 [Redex's Testing](https://docs.racket-lang.org/redex/Testing.html#:~:text=Other%20Relations4.6%C2%A0-,Testing,-4.7%C2%A0GUI4.8)?)
+- [ ] Rhombus?
