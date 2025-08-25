@@ -6,3 +6,4 @@
 (define version "0.0.1")
 (define pkg-authors '(pcn))
 (define license 'MIT)
+(define scribblings '(("scribblings/main.scrbl" ())))

@@ -6,8 +6,9 @@
          (for-syntax racket/base)
          )
 
-(provide check-eq?     check-eqv?     check-equal?     check-=
-         check-not-eq? check-not-eqv? check-not-equal? check-not-=
+(provide check-eq?     check-eqv?     check-equal?
+         check-not-eq? check-not-eqv? check-not-equal?
+         check-=
          check-pred
          check-true check-false check-not-false
          #;check-exn check-not-exn
@@ -119,6 +120,17 @@
      (unless (handle-as-syntax-error site (λ () (pred v₁ v₂)))
        (fail "Failed" site #f (format "~n    Predicate: ~a~n    1st value: ~a~n    2nd value: ~a" (name pred) v₁ v₂)))]))
 
+(define (guard-real site v-site v)
+  (unless (real? v)
+    (fail "Not real number" site v-site (format "~n    Value: ~a" v))))
+
+(define (do-check-= site v₁-site v₂-site ε-site v₁ v₂ ε)
+  (guard-real site v₁-site v₁)
+  (guard-real site v₂-site v₂)
+  (guard-real site  ε-site ε )
+  (unless (<= (abs (- v₁ v₂)) ε)
+    (fail "Failed" site #f (format "~n    Actual: ~a~n    Expected: ~a~n    Tolerance: ~a" v₁ v₂ ε))))
+
 (define (do-check-value msg expected? site v-site v)
   (unless (expected? v)
     (fail msg site v-site (format "~n    Value: ~a" v))))
@@ -160,16 +172,18 @@
 (define-syntax check-eq?    (equal-check #'eq?))
 (define-syntax check-eqv?   (equal-check #'eqv?))
 (define-syntax check-equal? (equal-check #'equal?))
-(define-syntax check-=      (equal-check #'=))
 
 (define-syntax check-not-eq?    (nequal-check #'eq?))
 (define-syntax check-not-eqv?   (nequal-check #'eqv?))
 (define-syntax check-not-equal? (nequal-check #'equal?))
-(define-syntax check-not-=      (nequal-check #'=))
 
 (define-syntax check-true      (value-check "Not literal #t" #'is-true-literal?))
 (define-syntax check-false     (value-check "Not false" #'not))
 (define-syntax check-not-false (value-check "Actually false" #'values))
+
+(define-syntax-parser check-=
+  [(~and stx (_ v₁:expr v₂:expr ε:expr))
+   #`(↓ stx (do-check-= #'stx #'v₁ #'v₂ #'ε (! v₁) (! v₂) (! ε)))])
 
 (define-syntax-parser check-pred
   [(~and stx (_ pred:expr v:expr))
