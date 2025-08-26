@@ -5,6 +5,8 @@
 
 @author[(author+email "Phil Nguyen" "philnguyen0112@gmail.com")]
 
+@defmodule[examples]
+
 This library allows writing compile-time unit tests,
 so that tests provide programmers with instant and prominent feedback similar
 to a type system.

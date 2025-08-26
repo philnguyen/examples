@@ -1,5 +1,5 @@
 #lang scribble/manual
-@(require (for-label racket/base racket/match racket/contract examples))
+@require[@for-label[racket/base racket/match racket/contract examples]]
 
 @title{Checks mirroring RackUnit}
 
